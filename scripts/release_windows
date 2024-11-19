@@ -1,0 +1,9 @@
+#!/bin/sh
+cmake -DCMAKE_TOOLCHAIN_FILE=../cmake_windows.cmake -B build
+cmake --build build
+
+echo
+echo =======================
+echo
+echo "To release => Rename build/windows to kettlevm_version_windows and compress it as a zip file"
+echo "To test    => Run wine build/windows/kettlevm.exe"

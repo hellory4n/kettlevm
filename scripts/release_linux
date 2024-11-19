@@ -1,0 +1,11 @@
+#!/bin/sh
+pushd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+popd
+cmake --build build
+
+echo
+echo =======================
+echo
+echo "To release => Rename build/linux to kettlevm_version_linux and compress it as a tar.gz file"
+echo "To test    => Run ./build/linux/kettlevm"
