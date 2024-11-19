@@ -4,7 +4,7 @@ project(kettlevm)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(WIN32)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc")
 endif()
 
 # Dependencies
@@ -49,6 +49,8 @@ target_link_libraries(${PROJECT_NAME} raylib)
 # Include directories
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/src)
+
+target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-g>)
 
 # Define the assets directory
 set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/assets")
