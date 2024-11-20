@@ -3,10 +3,10 @@
 ## Next-gen blazingly fast game-changing revolutionary functional object-oriented AI metaverse crypto eneftees idempotent C-replacement virtual machine cross-platform written in Rust written in Zig cloud machine learning big data quantum embedded iot 5g quantum smart home end-to-end encryption disruptive synergy taken offline agile spatial computing 110% leverage innovative outside the box networked new normal idempotent in 100 seconds
 
 ```java
-class CrapProgram {
-    static fun CrapProgram* new() {
-        OS.println("Hi mom");
-    }
+class CrapProgram;
+
+static fun CrapProgram* new() {
+    OS.println("Hi mom");
 }
 ```
 
@@ -21,13 +21,13 @@ the last 3 paragraphs are stolen from [jug](https://github.com/krall2125/jug)
 ## more examples
 
 ```java
-class Annihilator5000 {
-    // that's not a pointer that's just a reference
-    fun string* i_hope_you_die(Annihilator5000* this) {
-        // reverse polish notation is easier to parse
-        // .. from lua
-        return "i hope " "you die" ..;
-    }
+class Annihilator5000;
+
+// that's not a pointer that's just a reference
+fun string* i_hope_you_die(Annihilator5000* this) {
+    // reverse polish notation is easier to parse
+    // .. from lua
+    return "i hope " "you die" ..;
 }
 ```
 
@@ -36,19 +36,17 @@ class Annihilator5000 {
 // `parf;` directly maps to a parf instruction in the virtual machine
 // The parf instruction simply prints "meow".
 // Truly game-changing
-class ParfInstruction {
-    static fun ParfInstruction* new() {
-        parf;
-    }
+class ParfInstruction;
+
+static fun ParfInstruction* new() {
+    parf;
 }
 ```
 
-Also there's `any*` and a cast operator `a as B` because i can't be bothered to make generics
-
 ## how to run
 
-you need cmake c
+install zig
 
-scripts folder
+install raylib dependencies https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux
 
-there's only one dependency raylib the build script downloads raylib
+on windows you have to install raylib itself idfk
