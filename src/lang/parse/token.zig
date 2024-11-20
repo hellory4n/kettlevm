@@ -1,9 +1,8 @@
-const TokenTag = enum {
+pub const TokenTag = enum {
     identifier,
     string,
     char,
     int,
-    uint,
     float,
 
     plus,       // +
@@ -61,11 +60,10 @@ const TokenTag = enum {
     kreturn,
 };
 
-const Token = union(TokenTag) {
+pub const Token = union(TokenTag) {
     identifier: []const u8,
     string: []const u8,
     char: u8,
-    int: i64,
-    uint: u64,
+    int: u64,
     float: f64,
 };

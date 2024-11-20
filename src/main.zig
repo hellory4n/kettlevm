@@ -1,6 +1,26 @@
+const std = @import("std");
 const rl = @import("raylib");
+const lexer = @import("lang/parse/lexer.zig");
+const compstate = @import("lang/compiler_state.zig");
 
 pub fn main() anyerror!void {
+    var file = try std.fs.cwd().openFile("test/lexer.ktl", .{});
+	defer file.close();
+
+	var buf_reader = std.io.bufferedReader(file.reader());
+	var in_stream = buf_reader.reader();
+
+	const file_stat = try file.stat();
+
+    var allocator = std.heap.page_allocator;
+	const buffer = try allocator.alloc(u8, file_stat.size);
+	try in_stream.readNoEof(buffer);
+
+    // do crap
+    var c: compstate.CompilerState = .{};
+    lexer.lex(&c, allocator, buffer);
+
+	allocator.free(buffer);
     // const screenWidth = 800;
     // const screenHeight = 450;
 
