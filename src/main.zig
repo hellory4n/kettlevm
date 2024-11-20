@@ -3,7 +3,8 @@ const rl = @import("raylib");
 const lexer = @import("lang/parse/lexer.zig");
 const compstate = @import("lang/compiler_state.zig");
 
-pub fn main() anyerror!void {
+pub fn main() anyerror!void
+{
     var file = try std.fs.cwd().openFile("test/lexer.ktl", .{});
 	defer file.close();
 

@@ -66,4 +66,58 @@ pub const Token = union(TokenTag) {
     char: u8,
     int: u64,
     float: f64,
+
+    plus,
+    pluseq,     // +=
+    minus,      // -
+    minuseq,    // -=
+    asterisk,   // *
+    asteriskeq, // *=
+    slash,      // /
+    slasheq,    // /=
+    percent,    // %
+    percenteq,  // %=
+    equal,      // =
+    equaleq,    // ==
+    bang,       // !
+    bangeq,     // !=
+    ampersand,  // &
+    pipe,       // |
+    ampersand2, // &&
+    pipe2,      // ||
+    great,      // >
+    greateq,    // >=
+    less,       // <
+    lesseq,     // <=
+    semicolon,  // ;
+    colon,      // :
+    dot,        // .
+    comma,      // ,
+    lparen,     // (
+    rparen,     // )
+    lbracket,   // [
+    rbracket,   // ]
+    lbrace,     // {
+    rbrace,     // }
+    dotdot,     // ..
+
+    ktrue,
+    kfalse,
+    kclass,
+    kfun,
+    kmsg,
+    kstatic,
+    kparf,
+    kif,
+    kelse,
+    kfor,
+    kwhile,
+    kstring,
+    kint,
+    kuint,
+    kfloat,
+    kbool,
+    kchar,
+    kvoid,
+    kreturn,
 };
