@@ -1,8 +1,7 @@
 const std = @import("std");
 const token = @import("token.zig");
 const compstate = @import("../compiler_state.zig");
-const util = @import("../../util.zig");
-const keywords = @import("keywords.zig");
+const literals = @import("literals.zig");
 
 pub fn lex(c: *compstate.CompilerState, allocator: std.mem.Allocator, buffer: []u8) void
 {
@@ -18,25 +17,16 @@ pub fn lex(c: *compstate.CompilerState, allocator: std.mem.Allocator, buffer: []
 fn read_token(c: *compstate.CompilerState) void
 {
     // identifiers/keywords
-    const thisc = c.file[c.lex + 1];
-    if (std.ascii.isAlphanumeric(thisc) || thisc == '_') {
-        read_identifier(&c);
-    }
-}
+    const thisc = c.file[c.lex];
 
-fn read_identifier(c: *compstate.CompilerState) void {
-    var id = "";
-    var nextc = c.file[c.lex + 1];
+    switch (thisc) {
+        '"' => literals.read_string(&c),
 
-    while (std.ascii.isAlphanumeric(nextc) || nextc == '_') {
-        id = util.strconcat(id, nextc);
-        c.lex_i += 1;
-        nextc = c.file[c.lex + 1];
-    }
-
-    const nowthatlookslikeaj = keywords.read_keyword(id);
-    switch (nowthatlookslikeaj) {
-        .identifier => c.tokens.append(token.Token { .identifier = id }),
-        else => c.tokens.append(nowthatlookslikeaj)
+        else => {
+            // literals/keywords
+            if (std.ascii.isAlphanumeric(thisc) || thisc == '_') {
+                literals.read_identifier(&c);
+            }
+        }
     }
 }
