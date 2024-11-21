@@ -2,6 +2,7 @@ const std = @import("std");
 const rl = @import("raylib");
 const lexer = @import("lang/parse/lexer.zig");
 const compstate = @import("lang/compiler_state.zig");
+const token = @import("lang/parse/token.zig");
 
 pub fn main() anyerror!void
 {
@@ -18,8 +19,13 @@ pub fn main() anyerror!void
 	try in_stream.readNoEof(buffer);
 
     // do crap
-    var c: compstate.CompilerState = .{ .lex_i = 0 };
-    lexer.lex(&c, allocator, buffer);
+    var c: compstate.CompilerState = .{
+        .tokens = std.ArrayList(token.Token).init(allocator),
+    };
+    c.lex_i = 0;
+    c.file = buffer;
+    c = try lexer.lex(c, buffer);
+    lexer.print_tokens(c);
 
 	allocator.free(buffer);
     // const screenWidth = 800;

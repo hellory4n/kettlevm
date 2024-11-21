@@ -4,8 +4,9 @@ const token = @import("parse/token.zig");
 /// current state of the compiler
 pub const CompilerState = struct {
     /// lexer index
-    lex_i: u64,
+    var lex_i: u64 = 0;
+    /// list of tokens
     tokens: std.ArrayList(token.Token),
     /// content of the file currently being compiled
-    file: []u8
+    var file: []const u8 = "";
 };

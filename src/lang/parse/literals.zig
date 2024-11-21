@@ -4,7 +4,9 @@ const token = @import("token.zig");
 const util = @import("../../util.zig");
 const keywords = @import("keywords.zig");
 
-pub fn read_identifier(c: *compstate.CompilerState) void {
+pub fn read_identifier(cc: compstate.CompilerState) compstate.CompilerState
+{
+    var c = cc;
     var id = "";
     var nextc = c.file[c.lex_i + 1];
 
@@ -19,9 +21,12 @@ pub fn read_identifier(c: *compstate.CompilerState) void {
         .identifier => c.tokens.append(token.Token { .identifier = id }),
         else => c.tokens.append(nowthatlookslikeaj),
     }
+    return c;
 }
 
-pub fn read_string(c: *compstate.CompilerState) void {
+pub fn read_string(cc: compstate.CompilerState) compstate.CompilerState
+{
+    var c = cc;
     var str = "";
     var nextc = c.file[c.lex_i + 1];
 
@@ -39,9 +44,12 @@ pub fn read_string(c: *compstate.CompilerState) void {
         nextc = c.file[c.lex_i + 1];
     }
     c.tokens.append(token.Token { .string = str });
+    return c;
 }
 
-pub fn read_char(c: *compstate.CompilerState) void {
+pub fn read_char(cc: compstate.CompilerState) compstate.CompilerState
+{
+    var c = cc;
     var str = "";
     var nextc = c.file[c.lex_i + 1];
 
@@ -59,9 +67,12 @@ pub fn read_char(c: *compstate.CompilerState) void {
         nextc = c.file[c.lex_i + 1];
     }
     c.tokens.append(token.Token { .string = str });
+    return c;
 }
 
-pub fn read_number(c: *compstate.CompilerState) void {
+pub fn read_number(cc: compstate.CompilerState) compstate.CompilerState
+{
+    var c = cc;
     var is_float = false;
     var numstr = "";
     var nextc = c.file[c.lex_i + 1];
