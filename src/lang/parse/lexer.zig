@@ -23,6 +23,11 @@ fn read_token(c: *compstate.CompilerState) void
         '"' => literals.read_string(&c),
 
         else => {
+            // numbers
+            if (std.ascii.isDigit(thisc)) {
+                literals.read_number(&c);
+            }
+
             // literals/keywords
             if (std.ascii.isAlphanumeric(thisc) || thisc == '_') {
                 literals.read_identifier(&c);
