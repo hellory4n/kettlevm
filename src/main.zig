@@ -18,7 +18,7 @@ pub fn main() anyerror!void
 	try in_stream.readNoEof(buffer);
 
     // do crap
-    var c: compstate.CompilerState = .{};
+    var c: compstate.CompilerState = .{ .lex_i = 0 };
     lexer.lex(&c, allocator, buffer);
 
 	allocator.free(buffer);

@@ -25,9 +25,36 @@ pub fn read_string(c: *compstate.CompilerState) void {
     var str = "";
     var nextc = c.file[c.lex_i + 1];
 
-    // TODO: add escapes like \n \" \u69420
     while (nextc != '"') {
         str = util.strconcat(str, c.file[c.lex_i]);
+        if (nextc == '\\') {
+            c.lex_i += 1;
+            nextc = c.file[c.lex_i + 1];
+            str = util.strconcat(str, c.file[c.lex_i]);
+        }
+        else {
+            str = util.strconcat(str, c.file[c.lex_i]);
+        }
+        c.lex_i += 1;
+        nextc = c.file[c.lex_i + 1];
+    }
+    c.tokens.append(token.Token { .string = str });
+}
+
+pub fn read_char(c: *compstate.CompilerState) void {
+    var str = "";
+    var nextc = c.file[c.lex_i + 1];
+
+    while (nextc != '\'') {
+        str = util.strconcat(str, c.file[c.lex_i]);
+        if (nextc == '\\') {
+            c.lex_i += 1;
+            nextc = c.file[c.lex_i + 1];
+            str = util.strconcat(str, c.file[c.lex_i]);
+        }
+        else {
+            str = util.strconcat(str, c.file[c.lex_i]);
+        }
         c.lex_i += 1;
         nextc = c.file[c.lex_i + 1];
     }
