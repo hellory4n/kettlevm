@@ -18,9 +18,16 @@ fn read_token(c: *compstate.CompilerState) void
 {
     // identifiers/keywords
     const thisc = c.file[c.lex];
+    // TODO add a \0 at the end so it doesn't crash and die at the end
+    const nextc = c.file[c.lex + 1];
 
     switch (thisc) {
+        // TODO i forgor to make char literals
         '"' => literals.read_string(&c),
+        '+' => {
+            if (nextc == '=') c.tokens.append(token.Token { .pluseq })
+            else c.tokens.append(token.Token { .plus });
+        },
 
         else => {
             // numbers

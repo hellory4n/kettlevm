@@ -31,6 +31,7 @@ pub fn read_string(c: *compstate.CompilerState) void {
         c.lex_i += 1;
         nextc = c.file[c.lex_i + 1];
     }
+    c.tokens.append(token.Token { .string = str });
 }
 
 pub fn read_number(c: *compstate.CompilerState) void {
@@ -51,9 +52,9 @@ pub fn read_number(c: *compstate.CompilerState) void {
     // we just parsed a string, strings are in fact not numbers
     // conveniently parseInt/parseFloat supports _s like 1_000_000
     if (is_float) {
-        return try std.fmt.parseFloat(f64, numstr);
+        c.tokens.append(token.Token { .float = try std.fmt.parseFloat(f64, numstr) });
     }
     else {
-        return try std.fmt.parseInt(i64, numstr, 10);
+        c.tokens.append(token.Token { .int = try std.fmt.parseInt(i64, numstr, 10) });
     }
 }
