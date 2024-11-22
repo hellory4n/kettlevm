@@ -5,7 +5,10 @@ namespace kettlevm;
 class Program {
     public static void Main()
     {
-        string file = File.ReadAllText(Path.GetFullPath("../test/lexer.ktl"));
+        string file = File.ReadAllText(Path.GetFullPath("test/lexer.ktl"));
+        CompilerState c = new();
+        c = Lexer.lex(ref c, file);
+        Lexer.print_tokens(ref c);
         /*Raylib.InitWindow(800, 480, "Hello World");
         while (!Raylib.WindowShouldClose())
         {

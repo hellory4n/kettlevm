@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace kettlevm;
@@ -18,4 +19,25 @@ public struct CompilerState() {
     /// list of tokens
     /// </summary>
     public Queue<Token> tokens { get; set; } = [];
+    /// <summary>
+    /// the line the lexer is currently scanning
+    /// </summary>
+    public int thisline { get; set; } = 1;
+
+    /// <summary>
+    /// current character
+    /// </summary>
+    public char thisc() => file[lex_i];
+    /// <summary>
+    /// next character
+    /// </summary>
+    public char nextc() => file[lex_i + 1];
+    /// <summary>
+    /// next next character
+    /// </summary>
+    public char nexterc() => file[lex_i + 2];
+    /// <summary>
+    /// error message with line
+    /// </summary>
+    public void complain(string complaint) => Console.WriteLine($"{thisline}: {complaint}");
 }
