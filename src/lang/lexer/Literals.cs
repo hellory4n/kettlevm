@@ -57,7 +57,7 @@ public static partial class Lexer {
             c.lex_i++;
         }
 
-        if (str.Length == 1) c.tokens.Enqueue(new(TokenType.charlit) { strval = str });
+        if (str.Length == 1) c.tokens.Enqueue(new(TokenType.charlit) { charval = str[0] });
         else c.complain("Characters must be 1 character");
         return c;
     }

@@ -4,7 +4,7 @@ namespace kettlevm;
 public static partial class Lexer {
     public static CompilerState lex(ref CompilerState c, string file)
     {
-        c.file = file + "\0\0\0";
+        c.file = file + "\0\0\0\0\0\0";
         for (; c.lex_i < c.file.Length; c.lex_i++) {
             c = read_token(ref c);
         }
@@ -14,42 +14,59 @@ public static partial class Lexer {
     static CompilerState read_token(ref CompilerState c)
     {
         switch (c.thisc()) {
-            /*case '"': read_string(ref c); break;
-            case '\'': read_char(ref c); break;*/
+            //case '"': read_string(ref c); break;
+            case '\'': read_char(ref c); break;
 
             // ignore whitespace
             case ' ': break;
             case '\t': break;
             case '\r': break;
             case '\n': c.thisline++; break;
+            case '\0': return c;
 
             // + +=
             case '+':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.pluseq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.pluseq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.plus));
                 break;
             
             // - -=
             case '-':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.minuseq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.minuseq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.minus));
                 break;
             
             // * *=
             case '*':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.asteriskeq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.asteriskeq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.asterisk));
                 break;
             
             // / /= /* */
             case '/':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.slasheq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.slasheq));
+                    c.lex_i++;
+                }
                 else if (c.nextc() == '*') {
                     // TODO big mistake!
                     while (true) {
                         if (c.nextc() == '*' && c.nexterc() == '/') break;
                         // the lexer inserts those at the end
-                        if (c.nextc() == '\0') c.complain("Multi-line comment doesn't end");
+                        if (c.nextc() == '\0') {
+                            c.complain("Multi-line comment doesn't end");
+                            break;
+                        }
+                        if (c.nextc() == '\n') c.thisline++;
                         c.lex_i++;
                     }
                 }
@@ -58,49 +75,73 @@ public static partial class Lexer {
             
             // % %=
             case '%':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.percenteq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.percenteq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.percent));
                 break;
             
             // = ==
             case '=':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.equaleq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.equaleq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.equal));
                 break;
             
             // ! !=
             case '!':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.bangeq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.bangeq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.bang));
                 break;
             
             // > >=
             case '>':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.greateq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.greateq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.great));
                 break;
             
             // < <=
             case '<':
-                if (c.nextc() == '=') c.tokens.Enqueue(new(TokenType.lesseq));
+                if (c.nextc() == '=') {
+                    c.tokens.Enqueue(new(TokenType.lesseq));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.less));
                 break;
             
             // & &&
             case '&':
-                if (c.nextc() == '&') c.tokens.Enqueue(new(TokenType.ampersand2));
+                if (c.nextc() == '&') {
+                    c.tokens.Enqueue(new(TokenType.ampersand2));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.ampersand));
                 break;
             
             // | ||
             case '|':
-                if (c.nextc() == '|') c.tokens.Enqueue(new(TokenType.pipe2));
+                if (c.nextc() == '|') {
+                    c.tokens.Enqueue(new(TokenType.pipe2));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.pipe));
                 break;
             
             // . ..
             case '.':
-                if (c.nextc() == '.') c.tokens.Enqueue(new(TokenType.dotdot));
+                if (c.nextc() == '.') {
+                    c.tokens.Enqueue(new(TokenType.dotdot));
+                    c.lex_i++;
+                }
                 else c.tokens.Enqueue(new(TokenType.dot));
                 break;
             
