@@ -15,8 +15,8 @@ public static partial class Lexer {
     static CompilerState read_token(ref CompilerState c)
     {
         switch (c.thisc()) {
-            case '"': read_string(ref c); break;
-            case '\'': read_char(ref c); break;
+            /*case '"': read_string(ref c); break;
+            case '\'': read_char(ref c); break;*/
 
             // ignore whitespace
             case ' ': break;
@@ -49,6 +49,8 @@ public static partial class Lexer {
                     // TODO big mistake!
                     while (true) {
                         if (c.nextc() == '*' && c.nexterc() == '/') break;
+                        // the lexer inserts those at the end
+                        if (c.nextc() == '\0') c.complain("Multi-line comment doesn't end");
                         c.lex_i++;
                     }
                 }
@@ -115,7 +117,7 @@ public static partial class Lexer {
             case '}': c.tokens.Enqueue(new(TokenType.rbrace)); break;
 
             default:
-                // numbers
+                /*// numbers
                 if (is_digit(c.thisc())) {
                     c = read_number(ref c);
                 }
@@ -125,7 +127,7 @@ public static partial class Lexer {
                 }
                 else {
                     c.complain($"Unexpected character '{c.thisc()}'");
-                }
+                }*/
 
                 break;
         }
@@ -137,13 +139,14 @@ public static partial class Lexer {
         Console.Write("[");
         foreach (Token t in c.tokens) {
             Console.Write(t.type switch {
-                TokenType.identifier => $"(identifier = {t.strval})",
-                TokenType.strlit => $"(strlit = {t.strval})",
-                TokenType.intlit => $"(intlit = {t.intval})",
-                TokenType.floatlit => $"(floatlit = {t.floatval})",
-                TokenType.charlit => $"(charlit = {t.charval})",
-                _ => $"({t.type})",
+                TokenType.identifier => $"identifier = {t.strval}",
+                TokenType.strlit => $"strlit = {t.strval}",
+                TokenType.intlit => $"intlit = {t.intval}",
+                TokenType.floatlit => $"floatlit = {t.floatval}",
+                TokenType.charlit => $"charlit = {t.charval}",
+                _ => $"{t.type}",
             });
+            Console.Write(", ");
         }
         Console.Write("]\n");
     }

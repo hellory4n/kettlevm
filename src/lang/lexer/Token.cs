@@ -15,6 +15,8 @@ public struct Token(TokenType type)
 }
 
 public enum TokenType {
+    none,
+    
     identifier,
     strlit,
     charlit,
