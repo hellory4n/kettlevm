@@ -14,8 +14,8 @@ public static partial class Lexer {
     static CompilerState read_token(ref CompilerState c)
     {
         switch (c.thisc()) {
-            //case '"': read_string(ref c); break;
-            case '\'': read_char(ref c); break;
+            case '"': read_string(ref c); break;
+            //case '\'': read_char(ref c); break;
 
             // ignore whitespace
             case ' ': break;
@@ -180,7 +180,7 @@ public static partial class Lexer {
         foreach (Token t in c.tokens) {
             Console.Write(t.type switch {
                 TokenType.identifier => $"identifier = {t.strval}",
-                TokenType.strlit => $"strlit = {t.strval}",
+                TokenType.strlit => $"strlit = \"{t.strval}\"",
                 TokenType.intlit => $"intlit = {t.intval}",
                 TokenType.floatlit => $"floatlit = {t.floatval}",
                 TokenType.charlit => $"charlit = {t.charval}",

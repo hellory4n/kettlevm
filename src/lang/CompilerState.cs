@@ -31,11 +31,7 @@ public class CompilerState() {
     /// <summary>
     /// next character
     /// </summary>
-    public char nextc() {
-        //if (lex_i)
-        Console.WriteLine($"{lex_i + 1} ::: {file.Length} ::: {thisline}");
-        return file[lex_i + 1];
-    }
+    public char nextc() => file[lex_i + 1];
     /// <summary>
     /// next next character
     /// </summary>
