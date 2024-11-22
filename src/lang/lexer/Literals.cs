@@ -42,7 +42,8 @@ public static partial class Lexer {
         // escape sequences lamo
         // the japanese character isn't used anywhere, https://en.wikipedia.org/wiki/Ghost_characters
         Console.WriteLine($"p {start} {c.lex_i}");
-        string str = c.file.Substring(start + 1, c.lex_i - 2);
+        // no idea why i have to subtract by 13, i just do
+        string str = c.file.Substring(start + 1, c.lex_i - 13);
         Console.WriteLine($"gtgjgjgjgj {str}");
         str = str.Replace("\\\\", "垈");
         Console.WriteLine($"gtgjgjgjgj {str}");
