@@ -6,7 +6,7 @@ namespace kettlevm;
 /// <summary>
 /// the entire current of the compiler
 /// </summary>
-public struct CompilerState() {
+public class CompilerState() {
     /// <summary>
     /// content of the file currently being compiled
     /// </summary>

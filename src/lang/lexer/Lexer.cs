@@ -5,8 +5,7 @@ public static partial class Lexer {
     public static CompilerState lex(ref CompilerState c, string file)
     {
         c.file = file + "\0\0\0";
-        Token.this_compstate = c;
-        for (int i = 0; i < c.file.Length; i++) {
+        for (; c.lex_i < c.file.Length; c.lex_i++) {
             c = read_token(ref c);
         }
         return c;

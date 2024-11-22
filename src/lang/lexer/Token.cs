@@ -5,8 +5,6 @@ namespace kettlevm;
 /// </summary>
 public struct Token(TokenType type)
 {
-    public static CompilerState this_compstate { get; set; }
-    public int line { get; set; } = this_compstate.thisline;
     public string strval { get; set; } = "";
     public char charval { get; set; } = '\0';
     public ulong intval { get; set; } = 0;
@@ -16,7 +14,7 @@ public struct Token(TokenType type)
 
 public enum TokenType {
     none,
-    
+
     identifier,
     strlit,
     charlit,
