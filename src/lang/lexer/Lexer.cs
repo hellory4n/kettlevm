@@ -15,7 +15,7 @@ public static partial class Lexer {
     {
         switch (c.thisc()) {
             case '"': read_string(ref c); break;
-            //case '\'': read_char(ref c); break;
+            case '\'': read_char(ref c); break;
 
             // ignore whitespace
             case ' ': break;
@@ -157,12 +157,12 @@ public static partial class Lexer {
             case '}': c.tokens.Enqueue(new(TokenType.rbrace)); break;
 
             default:
-                /*// numbers
+                // numbers
                 if (is_digit(c.thisc())) {
                     c = read_number(ref c);
                 }
                 // literals keywords
-                else if (is_alphabetic(c.thisc()) || is_digit(c.thisc()) || c.thisc() == '_') {
+                /*else if (is_alphabetic(c.thisc()) || is_digit(c.thisc()) || c.thisc() == '_') {
                     c = read_identifier(ref c);
                 }
                 else {

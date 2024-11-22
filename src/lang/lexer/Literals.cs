@@ -25,7 +25,6 @@ public static partial class Lexer {
     {
         int start = c.lex_i;
         while (c.nextc() != '\0') {
-            Console.WriteLine(c.thisc());
             if (c.thisc() != '\\' && c.nextc() == '"') break;
             if (c.nextc() == '\n') c.thisline++;
             c.lex_i++;
@@ -35,9 +34,6 @@ public static partial class Lexer {
             c.complain("String doesn't end");
             return c;
         }
-
-        // the " at the end
-        c.lex_i++;
 
         // escape sequences lamo
         // the japanese character isn't used anywhere, https://en.wikipedia.org/wiki/Ghost_characters
@@ -59,48 +55,68 @@ public static partial class Lexer {
         return c;
     }
 
+    /// <summary>
+    /// this is just read_string but it checks the length
+    /// </summary>
     static CompilerState read_char(ref CompilerState c)
     {
-        /*while (c.thisc() != '\'') {
-            // escape stuff
-            if (c.thisc() == '\\') {
-                c.lex_i++;
-                str += c.thisc();
-            }
-            else {
-                str += c.thisc();
-            }
+        int start = c.lex_i;
+        while (c.nextc() != '\0') {
+            if (c.thisc() != '\\' && c.nextc() == '\'') break;
+            if (c.nextc() == '\n') c.thisline++;
             c.lex_i++;
         }
 
-        Console.WriteLine($"char: {str}");
+        if (c.thisc() == '\0') {
+            c.complain("Char doesn't end");
+            return c;
+        }
+
+        // escape sequences lamo
+        // the japanese character isn't used anywhere, https://en.wikipedia.org/wiki/Ghost_characters
+        Console.WriteLine($"p {start} {c.lex_i}");
+        // no idea why i have to subtract by 13, i just do
+        string str = c.file.Substring(start + 1, c.lex_i - 13);
+        Console.WriteLine($"gtgjgjgjgj {str}");
+        str = str.Replace("\\\\", "垈");
+        Console.WriteLine($"gtgjgjgjgj {str}");
+        str = str.Replace("\\n", "\n");
+        Console.WriteLine($"gtgjgjgjgj {str}");
+        str = str.Replace("\\\"", "\"");
+        Console.WriteLine($"gtgjgjgjgj {str}");
+        // TODO make a function with 5 billion trillion escape sequences
+        str = str.Replace("垈", "\\");
+        Console.WriteLine($"gtgjgjgjgj {str}");
+
         if (str.Length == 1) c.tokens.Enqueue(new(TokenType.charlit) { charval = str[0] });
-        else c.complain("Characters must be 1 character");*/
+        else c.complain("Character must be 1 character, for text use strings (double quotes)");
         return c;
     }
 
     static CompilerState read_number(ref CompilerState c)
     {
+        int start = c.lex_i;
         bool isfloat = false;
-        string numstr = "";
-        
-        // _ is supported so you can write really big numbers like 1_000_000
-        while (is_digit(c.nextc()) || c.nextc() == '_') {
-            numstr += c.thisc();
-            if (c.nextc() == '.') {
-                c.lex_i++;
-                isfloat = true;
-            }
+        while (c.nextc() != '\0') {
+            if (!is_digit(c.thisc()) && c.thisc() != '.' && c.thisc() != '_') break;
+            if (c.thisc() == '.') isfloat = true;
             c.lex_i++;
         }
 
-        // we just parsed a string, strings are in fact not numbers
+        // no idea why i have to subtract by 13, i just do
+        string numstr = c.file.Substring(start + 1, c.lex_i - 13);
+        Console.WriteLine(numstr);
         numstr = numstr.Replace("_", "");
-        if (isfloat) {
-            c.tokens.Enqueue(new(TokenType.floatlit) { floatval = double.Parse(numstr, CultureInfo.InvariantCulture) });
+
+        // man
+        try {
+            if (isfloat) c.tokens.Enqueue(new(TokenType.floatlit)
+                { floatval = double.Parse(numstr, CultureInfo.InvariantCulture) });
+            else c.tokens.Enqueue(new(TokenType.intlit)
+                { intval = ulong.Parse(numstr, CultureInfo.InvariantCulture) });
         }
-        else {
-            c.tokens.Enqueue(new(TokenType.intlit) { intval = ulong.Parse(numstr, CultureInfo.InvariantCulture) });
+        catch(Exception) {
+            c.complain("Couldn't parse number");
         }
         return c;
     }
