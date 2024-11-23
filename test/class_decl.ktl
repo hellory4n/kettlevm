@@ -1,0 +1,17 @@
+/* all files must be in a class, this is object-oriented lmao */
+entity class ClassDecl;
+
+/* members */
+string die = "man.";
+int fuckoff; /* = 0 */
+TypemaBalls no;
+
+msg void Funk();
+fun string ckoff(char jjdj) {
+    // jjhjhjjh
+}
+
+msg TypemaBalls suffer(uint lol, float lmao, int jj, string tumadre, char jjj)
+{
+    // jjjjj
+}
