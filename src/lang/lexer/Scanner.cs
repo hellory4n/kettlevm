@@ -195,6 +195,29 @@ static class Scanner
                         Console.WriteLine("String literal doesn't end");
                     }
                     break;
+                
+                // chars are just strings but with an error
+                case '\'':
+                    string cha = "";
+                    while (text[i + 1] != '\0') {
+                        // so it doesn't immediately stop with the starting "
+                        if (cha == "") i++;
+                        if (text[i] == '\'') break;
+                        // so it doesn't stop with \'
+                        if (text[i] == '\\' && text[i + 1] == '\'') i++;
+                        cha += text[i];
+                        i++;
+                    }
+
+                    if (text[i] != '\0') {
+                        cha = ScannerUtils.Unescape(cha);
+                        if (cha.Length == 1) tokens.Add(new Token { Type = TokenType.CharLit, Literal = cha });
+                        else Console.WriteLine($"Character at {i} is too long; for text use strings (double quotes)");
+                    }
+                    else {
+                        Console.WriteLine("Char literal doesn't end");
+                    }
+                    break;
 
                 // numbers and identifiers and stuff are a bit trickier
                 default:
@@ -223,7 +246,7 @@ static class Scanner
                         // then we actually add the token
                         if (isFloat) {
                             tokens.Add(new Token {
-                                Type = TokenType.Float,
+                                Type = TokenType.Floating,
                                 Literal = double.Parse(thing, CultureInfo.InvariantCulture)
                             });
                         }

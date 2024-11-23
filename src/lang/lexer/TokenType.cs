@@ -9,7 +9,7 @@ enum TokenType
     Dot, Comma, Colon, Semicolon,
 
     // literals & shit
-    Integer, Float, Identifier, StringLit, CharLit,
+    Integer, Floating, Identifier, StringLit, CharLit,
 
     // operators
     // +  -      *     /      %        ..
@@ -23,11 +23,9 @@ enum TokenType
     //    >  <     >=            <=         =      ==          !=
     Greater, Less, GreaterEqual, LessEqual, Equal, EqualEqual, BangEqual,
 
-    // exclusively used by the parser
-    Negate,
-
-    // keywords
-    True, False,
+    // keywords (and or not are also keywords btw)
+    True, False, Class, Fun, Msg, Static, Parf, If, Else, For, While, String, Int, Uint, Float, Bool, Char, Void,
+    Return,
 
     End
 }
