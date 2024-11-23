@@ -18,4 +18,15 @@ static class ScannerUtils {
                                            c == 'y' || c == 'z';
     
     public static bool IsValidId(char c) => IsDigit(c) || IsLetter(c) || c == '_';
+
+    public static string Unescape(string s)
+    {
+        // \" is already handled beforehand
+        return s
+            .Replace("\\\\", "垈") // 垈 isn't used anywhere unless you're talking about itself, see
+                                   // https://en.wikipedia.org/wiki/Ghost_characters
+            .Replace("\\n", "\n")
+            .Replace("\\t", "\t")
+            .Replace('垈', '\\');
+    }
 }

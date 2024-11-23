@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 namespace kettlevm;
@@ -136,6 +137,62 @@ static class Scanner
                     }
                     else {
                         tokens.Add(new Token { Type = TokenType.Dot });
+                    }
+                    break;
+                
+                // / is fucky since comments start with /
+                case '/':
+                    if (text[i + 1] == '*') {
+                        i++;
+                        // take that C
+                        // COMMENTS NEST!!
+                        uint comments = 1;
+                        while (true) {
+                            if (text[i + 1] != '*' && text[i + 2] != '/') {
+                                i += 2;
+                                comments--;
+                            }
+                            if (text[i + 1] != '/' && text[i + 2] != '*') comments++;
+                            if (comments == 0) {
+                                i++;
+                                break;
+                            }
+                            if (text[i + 1] == '\0') {
+                                Console.WriteLine("Error: Comment doesn't end");
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                    else if (text[i + 1] == '=') {
+                        tokens.Add(new Token { Type = TokenType.SlashEqual });
+                        i++;
+                    }
+                    else {
+                        tokens.Add(new Token { Type = TokenType.Slash });
+                    }
+                    break;
+                
+                // los estringues (string)
+                case '"':
+                    string str = "";
+                    while (text[i + 1] != '\0') {
+                        // so it doesn't immediately stop with the starting "
+                        if (str == "") i++;
+                        if (text[i] == '"') break;
+                        // so it doesn't stop with \"
+                        if (text[i] == '\\' && text[i + 1] == '"') i++;
+                        str += text[i];
+                        i++;
+                    }
+
+                    if (text[i] != '\0') {
+                        str += text[i];
+                        str = ScannerUtils.Unescape(str);
+                        tokens.Add(new Token { Type = TokenType.StringLit, Literal = str });
+                    }
+                    else {
+                        Console.WriteLine("String literal doesn't end");
                     }
                     break;
 
