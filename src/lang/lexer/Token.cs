@@ -3,8 +3,11 @@ namespace kettlevm;
 /// <summary>
 /// it's a token :D
 /// </summary>
-public struct Token(TokenType type)
+public struct Token(CompilerState c, TokenType type)
 {
+    public int start { get; set; } = c.lex_start;
+    public int end { get; set; } = c.lex_this;
+    public int line { get; set; } = c.lex_line;
     public string strval { get; set; } = "";
     public char charval { get; set; } = '\0';
     public ulong intval { get; set; } = 0;
@@ -25,8 +28,8 @@ public enum TokenType {
     pluseq,     // +=
     minus,      // -
     minuseq,    // -=
-    asterisk,   // *
-    asteriskeq, // *=
+    star,       // *
+    stareq,     // *=
     slash,      // /
     slasheq,    // /=
     percent,    // %

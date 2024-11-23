@@ -5,7 +5,7 @@ namespace kettlevm;
 public static partial class Lexer {
     static CompilerState read_identifier(ref CompilerState c)
     {
-        string id = "";
+        /*string id = "";
 
         while (is_alphabetic(c.nextc()) || is_digit(c.nextc()) || c.nextc() == '_') {
             id += c.thisc();
@@ -17,13 +17,15 @@ public static partial class Lexer {
         c.tokens.Enqueue(nowthatlookslikeaj.type switch {
             TokenType.identifier => new(TokenType.identifier) { strval = id },
             _ => nowthatlookslikeaj
-        });
+        });*/
         return c;
     }
 
     static CompilerState read_string(ref CompilerState c)
     {
-        int start = c.lex_i;
+        /*int start = c.lex_i;
+        int fuck = 0;
+        ---fuck;
         while (c.nextc() != '\0') {
             if (c.thisc() != '\\' && c.nextc() == '"') break;
             if (c.nextc() == '\n') c.thisline++;
@@ -51,7 +53,7 @@ public static partial class Lexer {
         str = str.Replace("垈", "\\");
         Console.WriteLine($"gtgjgjgjgj {str}");
 
-        c.tokens.Enqueue(new(TokenType.strlit) { strval = str });
+        c.tokens.Enqueue(new(TokenType.strlit) { strval = str });*/
         return c;
     }
 
@@ -60,7 +62,7 @@ public static partial class Lexer {
     /// </summary>
     static CompilerState read_char(ref CompilerState c)
     {
-        int start = c.lex_i;
+        /*int start = c.lex_i;
         while (c.nextc() != '\0') {
             if (c.thisc() != '\\' && c.nextc() == '\'') break;
             if (c.nextc() == '\n') c.thisline++;
@@ -89,13 +91,13 @@ public static partial class Lexer {
         Console.WriteLine($"gtgjgjgjgj {str}");
 
         if (str.Length == 1) c.tokens.Enqueue(new(TokenType.charlit) { charval = str[0] });
-        else c.complain("Character must be 1 character, for text use strings (double quotes)");
+        else c.complain("Character must be 1 character, for text use strings (double quotes)");*/
         return c;
     }
 
     static CompilerState read_number(ref CompilerState c)
     {
-        int start = c.lex_i;
+        /*int start = c.lex_i;
         bool isfloat = false;
         while (c.nextc() != '\0') {
             if (!is_digit(c.thisc()) && c.thisc() != '.' && c.thisc() != '_') break;
@@ -117,7 +119,7 @@ public static partial class Lexer {
         }
         catch(Exception) {
             c.complain("Couldn't parse number");
-        }
+        }*/
         return c;
     }
 }

@@ -4,27 +4,27 @@ public static partial class Lexer {
     /// <summary>
     /// returns an ID token if it's not a keyword
     /// </summary>
-    public static Token read_keyword(string id)
+    public static Token read_keyword(CompilerState c, string id)
     {
         return id switch {
-            "true" => new(TokenType.ktrue),
-            "false" => new(TokenType.kfalse),
-            "class" => new(TokenType.kclass),
-            "fun" => new(TokenType.kfun),
-            "msg" => new(TokenType.kmsg),
-            "static" => new(TokenType.kstatic),
-            "parf" => new(TokenType.kparf),
-            "if" => new(TokenType.kif),
-            "else" => new(TokenType.kelse),
-            "for" => new(TokenType.kfor),
-            "string" => new(TokenType.kstring),
-            "int" => new(TokenType.kint),
-            "uint" => new(TokenType.kuint),
-            "float" => new(TokenType.kfloat),
-            "bool" => new(TokenType.kbool),
-            "char" => new(TokenType.kchar),
-            "void" => new(TokenType.kvoid),
-            "return" => new(TokenType.kreturn),
+            "true" => new(c, TokenType.ktrue),
+            "false" => new(c, TokenType.kfalse),
+            "class" => new(c, TokenType.kclass),
+            "fun" => new(c, TokenType.kfun),
+            "msg" => new(c, TokenType.kmsg),
+            "static" => new(c, TokenType.kstatic),
+            "parf" => new(c, TokenType.kparf),
+            "if" => new(c, TokenType.kif),
+            "else" => new(c, TokenType.kelse),
+            "for" => new(c, TokenType.kfor),
+            "string" => new(c, TokenType.kstring),
+            "int" => new(c, TokenType.kint),
+            "uint" => new(c, TokenType.kuint),
+            "float" => new(c, TokenType.kfloat),
+            "bool" => new(c, TokenType.kbool),
+            "char" => new(c, TokenType.kchar),
+            "void" => new(c, TokenType.kvoid),
+            "return" => new(c, TokenType.kreturn),
             _ => new() {
                 strval = id,
             }

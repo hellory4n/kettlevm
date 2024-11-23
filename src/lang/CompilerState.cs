@@ -12,9 +12,13 @@ public class CompilerState() {
     /// </summary>
     public string file { get; set; } = "";
     /// <summary>
-    /// lexer index
+    /// current character
     /// </summary>
-    public int lex_i { get; set; } = 0;
+    public int lex_this { get; set; } = 0;
+    /// <summary>
+    /// start of the token being parsed
+    /// </summary>
+    public int lex_start { get; set; } = 0;
     /// <summary>
     /// list of tokens
     /// </summary>
@@ -22,22 +26,15 @@ public class CompilerState() {
     /// <summary>
     /// the line the lexer is currently scanning
     /// </summary>
-    public int thisline { get; set; } = 1;
+    public int lex_line { get; set; } = 1;
 
-    /// <summary>
-    /// current character
-    /// </summary>
-    public char thisc() => file[lex_i];
-    /// <summary>
-    /// next character
-    /// </summary>
-    public char nextc() => file[lex_i + 1];
-    /// <summary>
-    /// next next character
-    /// </summary>
-    public char nexterc() => file[lex_i + 2];
     /// <summary>
     /// error message with line
     /// </summary>
-    public void complain(string complaint) => Console.WriteLine($"line {thisline}: {complaint}");
+    public void complain(string complaint) => Console.WriteLine($"[{lex_line}:{lex_start}-{lex_this}]: {complaint}");
+    /// <summary>
+    /// for when lexer no worky
+    /// </summary>
+    public void noworky() =>
+        Console.WriteLine($"{lex_line}:{lex_start}-{lex_this} = {file.Substring(lex_start, lex_this)}");
 }
