@@ -15,32 +15,62 @@ static class Scanner
             char c = text[i];
 
             switch (c) {
-                // pretty easy to parse those
-                case '+': tokens.Add(new Token { Type = TokenType.Plus }); break;
-                case '-': tokens.Add(new Token { Type = TokenType.Minus }); break;
-                case '*': tokens.Add(new Token { Type = TokenType.Star }); break;
-                case '/': tokens.Add(new Token { Type = TokenType.Slash }); break;
-                case '%': tokens.Add(new Token { Type = TokenType.Percent }); break;
+                // these are just 1 character
                 case '(': tokens.Add(new Token { Type = TokenType.LParen }); break;
                 case ')': tokens.Add(new Token { Type = TokenType.RParen }); break;
-
-                // dumb operators that can also be keywords
-                case '&':
-                    if (text[i + 1] == '&') {
-                        tokens.Add(new Token { Type = TokenType.And });
+                case '[': tokens.Add(new Token { Type = TokenType.LBracket }); break;
+                case ']': tokens.Add(new Token { Type = TokenType.RBracket }); break;
+                case '{': tokens.Add(new Token { Type = TokenType.LBrace }); break;
+                case '}': tokens.Add(new Token { Type = TokenType.RBrace }); break;
+                case ',': tokens.Add(new Token { Type = TokenType.Comma }); break;
+                case ':': tokens.Add(new Token { Type = TokenType.Colon }); break;
+                case ';': tokens.Add(new Token { Type = TokenType.Semicolon }); break;
+                
+                // dumb operators that can have = at the end
+                case '+':
+                    if (text[i + 1] == '=') {
+                        tokens.Add(new Token { Type = TokenType.PlusEqual });
+                        i++;
+                    }
+                    else {
+                        tokens.Add(new Token { Type = TokenType.Plus });
                     }
                     break;
                 
-                case '|':
-                    if (text[i + 1] == '|') {
-                        tokens.Add(new Token { Type = TokenType.Or });
+                case '-':
+                    if (text[i + 1] == '=') {
+                        tokens.Add(new Token { Type = TokenType.MinusEqual });
+                        i++;
+                    }
+                    else {
+                        tokens.Add(new Token { Type = TokenType.Minus });
                     }
                     break;
                 
-                // =
+                case '*':
+                    if (text[i + 1] == '=') {
+                        tokens.Add(new Token { Type = TokenType.StarEqual });
+                        i++;
+                    }
+                    else {
+                        tokens.Add(new Token { Type = TokenType.Star });
+                    }
+                    break;
+                
+                case '%':
+                    if (text[i + 1] == '=') {
+                        tokens.Add(new Token { Type = TokenType.PercentEqual });
+                        i++;
+                    }
+                    else {
+                        tokens.Add(new Token { Type = TokenType.Percent });
+                    }
+                    break;
+                
                 case '=':
                     if (text[i + 1] == '=') {
                         tokens.Add(new Token { Type = TokenType.EqualEqual });
+                        i++;
                     }
                     else {
                         tokens.Add(new Token { Type = TokenType.Equal });
@@ -50,6 +80,7 @@ static class Scanner
                 case '!':
                     if (text[i + 1] == '=') {
                         tokens.Add(new Token { Type = TokenType.BangEqual });
+                        i++;
                     }
                     else {
                         tokens.Add(new Token { Type = TokenType.Bang });
@@ -59,6 +90,7 @@ static class Scanner
                 case '<':
                     if (text[i + 1] == '=') {
                         tokens.Add(new Token { Type = TokenType.LessEqual });
+                        i++;
                     }
                     else {
                         tokens.Add(new Token { Type = TokenType.Less });
@@ -68,13 +100,46 @@ static class Scanner
                 case '>':
                     if (text[i + 1] == '=') {
                         tokens.Add(new Token { Type = TokenType.GreaterEqual });
+                        i++;
                     }
                     else {
                         tokens.Add(new Token { Type = TokenType.Greater });
                     }
                     break;
+                
+                // more dumb
+                case '&':
+                    if (text[i + 1] == '&') {
+                        tokens.Add(new Token { Type = TokenType.And });
+                        i++;
+                    }
+                    break;
+                
+                case '|':
+                    if (text[i + 1] == '|') {
+                        tokens.Add(new Token { Type = TokenType.Or });
+                        i++;
+                    }
+                    break;
+                
+                // . is a bit fucky since .. is for string concatenation
+                case '.':
+                    if (text[i + 1] == '.') {
+                        if (text[i + 2] == '=') {
+                            tokens.Add(new Token { Type = TokenType.DotDotEqual });
+                            i += 2;
+                        }
+                        else {
+                            tokens.Add(new Token { Type = TokenType.DotDot });
+                            i++;
+                        }
+                    }
+                    else {
+                        tokens.Add(new Token { Type = TokenType.Dot });
+                    }
+                    break;
 
-                // numbers are a bit trickier
+                // numbers and identifiers and stuff are a bit trickier
                 default:
                     if (ScannerUtils.IsDigit(c)) {
                         bool isFloat = false;

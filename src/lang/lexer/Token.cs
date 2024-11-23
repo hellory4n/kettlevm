@@ -7,6 +7,6 @@ class Token
 
     public override string ToString()
     {
-        return $"[{Type} = {Literal}]";
+        return Literal == null ? $"[{Type}]" : $"[{Type} = {Literal}]";
     }
 }
