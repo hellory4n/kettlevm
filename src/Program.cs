@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Raylib_cs;
 namespace kettlevm;
 
@@ -6,9 +7,14 @@ class Program {
     public static void Main()
     {
         string file = File.ReadAllText(Path.GetFullPath("test/lexer.ktl"));
-        CompilerState c = new();
+        var a_shit = Scanner.Scan(file);
+        foreach (Token crap in a_shit) {
+            Console.Write($"{crap}, ");
+        }
+        Console.WriteLine();
+        /*CompilerState c = new();
         c = Lexer.lex(ref c, file);
-        Lexer.print_tokens(ref c);
+        Lexer.print_tokens(ref c);*/
         /*Raylib.InitWindow(800, 480, "Hello World");
         while (!Raylib.WindowShouldClose())
         {
