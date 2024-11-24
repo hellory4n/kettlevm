@@ -26,5 +26,6 @@ static class Keywords
         {"char", TokenType.Char},
         {"void", TokenType.Void},
         {"return", TokenType.Return},
+        {"any", TokenType.Any},
     };
 }

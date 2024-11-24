@@ -5,11 +5,12 @@ namespace kettlevm;
 
 static class Scanner
 {
-    public static List<Token> Scan(string text)
+    public static (List<Token>, int) Scan(string text)
     {
         // so we don't have to deal with this every single time we want to look at the next character
         text += '\0';
         List<Token> tokens = [];
+        int errors = 0;
 
         // we use a normal for loop since it allows changing the index and looking at the next character
         for (int i = 0; i < text.Length; i++) {
@@ -159,6 +160,7 @@ static class Scanner
                             }
                             if (text[i + 1] == '\0') {
                                 Console.WriteLine("Error: Comment doesn't end");
+                                errors++;
                                 break;
                             }
                             i++;
@@ -193,6 +195,7 @@ static class Scanner
                     }
                     else {
                         Console.WriteLine("String literal doesn't end");
+                        errors++;
                     }
                     break;
                 
@@ -216,6 +219,7 @@ static class Scanner
                     }
                     else {
                         Console.WriteLine("Char literal doesn't end");
+                        errors++;
                     }
                     break;
 
@@ -244,19 +248,25 @@ static class Scanner
                         }
 
                         // then we actually add the token
-                        if (isFloat) {
-                            tokens.Add(new Token {
-                                Type = TokenType.Floating,
-                                Literal = double.Parse(thing, CultureInfo.InvariantCulture),
-                                Idx = i
-                            });
+                        try {
+                            if (isFloat) {
+                                tokens.Add(new Token {
+                                    Type = TokenType.Floating,
+                                    Literal = double.Parse(thing, CultureInfo.InvariantCulture),
+                                    Idx = i
+                                });
+                            }
+                            else {
+                                tokens.Add(new Token {
+                                    Type = TokenType.Integer,
+                                    Literal = int.Parse(thing, CultureInfo.InvariantCulture),
+                                    Idx = i
+                                });
+                            }
                         }
-                        else {
-                            tokens.Add(new Token {
-                                Type = TokenType.Integer,
-                                Literal = int.Parse(thing, CultureInfo.InvariantCulture),
-                                Idx = i
-                            });
+                        catch (Exception) {
+                            Console.WriteLine($"Couldn't parse number at {i}");
+                            errors++;
                         }
                     }
 
@@ -288,6 +298,6 @@ static class Scanner
             }
         }
 
-        return tokens;
+        return (tokens, errors);
     }
 }

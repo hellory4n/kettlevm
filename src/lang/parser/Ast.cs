@@ -21,6 +21,8 @@ class VariableDecl: Stmt {
 class TypeThing {
     public string Name { get; set; } = "";
     public PrimitiveType TypeType { get; set; }
+    public int Pointers { get; set; } = 0;
+    public int Arrays { get; set; }
 }
 
 enum PrimitiveType {

@@ -6,12 +6,12 @@ namespace kettlevm;
 class Program {
     public static void Main()
     {
-        string file = File.ReadAllText(Path.GetFullPath("test/lexer.ktl"));
-        var a_shit = Scanner.Scan(file);
-        foreach (Token crap in a_shit) {
-            Console.Write($"{crap}, ");
+        string file = File.ReadAllText(Path.GetFullPath("test/class_decl.ktl"));
+        var (aShit, crapErrors) = Scanner.Scan(file);
+        if (crapErrors == 0) {
+            Parser.Parse(aShit);
         }
-        Console.WriteLine();
+        
         /*CompilerState c = new();
         c = Lexer.lex(ref c, file);
         Lexer.print_tokens(ref c);*/
