@@ -17,108 +17,108 @@ static class Scanner
 
             switch (c) {
                 // these are just 1 character
-                case '(': tokens.Add(new Token { Type = TokenType.LParen }); break;
-                case ')': tokens.Add(new Token { Type = TokenType.RParen }); break;
-                case '[': tokens.Add(new Token { Type = TokenType.LBracket }); break;
-                case ']': tokens.Add(new Token { Type = TokenType.RBracket }); break;
-                case '{': tokens.Add(new Token { Type = TokenType.LBrace }); break;
-                case '}': tokens.Add(new Token { Type = TokenType.RBrace }); break;
-                case ',': tokens.Add(new Token { Type = TokenType.Comma }); break;
-                case ':': tokens.Add(new Token { Type = TokenType.Colon }); break;
-                case ';': tokens.Add(new Token { Type = TokenType.Semicolon }); break;
+                case '(': tokens.Add(new Token { Type = TokenType.LParen, Idx = i }); break;
+                case ')': tokens.Add(new Token { Type = TokenType.RParen, Idx = i }); break;
+                case '[': tokens.Add(new Token { Type = TokenType.LBracket, Idx = i }); break;
+                case ']': tokens.Add(new Token { Type = TokenType.RBracket, Idx = i }); break;
+                case '{': tokens.Add(new Token { Type = TokenType.LBrace, Idx = i }); break;
+                case '}': tokens.Add(new Token { Type = TokenType.RBrace, Idx = i }); break;
+                case ',': tokens.Add(new Token { Type = TokenType.Comma, Idx = i }); break;
+                case ':': tokens.Add(new Token { Type = TokenType.Colon, Idx = i }); break;
+                case ';': tokens.Add(new Token { Type = TokenType.Semicolon, Idx = i }); break;
                 
                 // dumb operators that can have = at the end
                 case '+':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.PlusEqual });
+                        tokens.Add(new Token { Type = TokenType.PlusEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Plus });
+                        tokens.Add(new Token { Type = TokenType.Plus, Idx = i });
                     }
                     break;
                 
                 case '-':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.MinusEqual });
+                        tokens.Add(new Token { Type = TokenType.MinusEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Minus });
+                        tokens.Add(new Token { Type = TokenType.Minus, Idx = i });
                     }
                     break;
                 
                 case '*':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.StarEqual });
+                        tokens.Add(new Token { Type = TokenType.StarEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Star });
+                        tokens.Add(new Token { Type = TokenType.Star, Idx = i });
                     }
                     break;
                 
                 case '%':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.PercentEqual });
+                        tokens.Add(new Token { Type = TokenType.PercentEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Percent });
+                        tokens.Add(new Token { Type = TokenType.Percent, Idx = i });
                     }
                     break;
                 
                 case '=':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.EqualEqual });
+                        tokens.Add(new Token { Type = TokenType.EqualEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Equal });
+                        tokens.Add(new Token { Type = TokenType.Equal, Idx = i });
                     }
                     break;
 
                 case '!':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.BangEqual });
+                        tokens.Add(new Token { Type = TokenType.BangEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Bang });
+                        tokens.Add(new Token { Type = TokenType.Bang, Idx = i });
                     }
                     break;
                 
                 case '<':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.LessEqual });
+                        tokens.Add(new Token { Type = TokenType.LessEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Less });
+                        tokens.Add(new Token { Type = TokenType.Less, Idx = i });
                     }
                     break;
                 
                 case '>':
                     if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.GreaterEqual });
+                        tokens.Add(new Token { Type = TokenType.GreaterEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Greater });
+                        tokens.Add(new Token { Type = TokenType.Greater, Idx = i });
                     }
                     break;
                 
                 // more dumb
                 case '&':
                     if (text[i + 1] == '&') {
-                        tokens.Add(new Token { Type = TokenType.And });
+                        tokens.Add(new Token { Type = TokenType.And, Idx = i });
                         i++;
                     }
                     break;
                 
                 case '|':
                     if (text[i + 1] == '|') {
-                        tokens.Add(new Token { Type = TokenType.Or });
+                        tokens.Add(new Token { Type = TokenType.Or, Idx = i });
                         i++;
                     }
                     break;
@@ -127,16 +127,16 @@ static class Scanner
                 case '.':
                     if (text[i + 1] == '.') {
                         if (text[i + 2] == '=') {
-                            tokens.Add(new Token { Type = TokenType.DotDotEqual });
+                            tokens.Add(new Token { Type = TokenType.DotDotEqual, Idx = i });
                             i += 2;
                         }
                         else {
-                            tokens.Add(new Token { Type = TokenType.DotDot });
+                            tokens.Add(new Token { Type = TokenType.DotDot, Idx = i });
                             i++;
                         }
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Dot });
+                        tokens.Add(new Token { Type = TokenType.Dot, Idx = i });
                     }
                     break;
                 
@@ -165,11 +165,11 @@ static class Scanner
                         }
                     }
                     else if (text[i + 1] == '=') {
-                        tokens.Add(new Token { Type = TokenType.SlashEqual });
+                        tokens.Add(new Token { Type = TokenType.SlashEqual, Idx = i });
                         i++;
                     }
                     else {
-                        tokens.Add(new Token { Type = TokenType.Slash });
+                        tokens.Add(new Token { Type = TokenType.Slash, Idx = i });
                     }
                     break;
                 
@@ -189,7 +189,7 @@ static class Scanner
                     if (text[i] != '\0') {
                         str += text[i];
                         str = ScannerUtils.Unescape(str);
-                        tokens.Add(new Token { Type = TokenType.StringLit, Literal = str });
+                        tokens.Add(new Token { Type = TokenType.StringLit, Literal = str, Idx = i });
                     }
                     else {
                         Console.WriteLine("String literal doesn't end");
@@ -211,7 +211,7 @@ static class Scanner
 
                     if (text[i] != '\0') {
                         cha = ScannerUtils.Unescape(cha);
-                        if (cha.Length == 1) tokens.Add(new Token { Type = TokenType.CharLit, Literal = cha });
+                        if (cha.Length == 1) tokens.Add(new Token { Type = TokenType.CharLit, Literal = cha, Idx = i });
                         else Console.WriteLine($"Character at {i} is too long; for text use strings (double quotes)");
                     }
                     else {
@@ -247,13 +247,15 @@ static class Scanner
                         if (isFloat) {
                             tokens.Add(new Token {
                                 Type = TokenType.Floating,
-                                Literal = double.Parse(thing, CultureInfo.InvariantCulture)
+                                Literal = double.Parse(thing, CultureInfo.InvariantCulture),
+                                Idx = i
                             });
                         }
                         else {
                             tokens.Add(new Token {
                                 Type = TokenType.Integer,
-                                Literal = int.Parse(thing, CultureInfo.InvariantCulture)
+                                Literal = int.Parse(thing, CultureInfo.InvariantCulture),
+                                Idx = i
                             });
                         }
                     }
@@ -270,13 +272,15 @@ static class Scanner
 
                         if (Keywords.KeyOfWords.TryGetValue(id, out TokenType epicAmazingFantasticMajesticToken)) {
                             tokens.Add(new Token {
-                                Type = epicAmazingFantasticMajesticToken
+                                Type = epicAmazingFantasticMajesticToken,
+                                Idx = 1,
                             });
                         }
                         else {
                             tokens.Add(new Token {
                                 Type = TokenType.Identifier,
-                                Literal = id
+                                Literal = id,
+                                Idx = 1,
                             });
                         }
                     }

@@ -8,14 +8,14 @@ interface Stmt: AstNode {}
 
 class Class: Stmt {
     public string Name { get; set; } = "";
-    public Queue<Variable> Properties { get; set; } = [];
+    public Queue<VariableDecl> Properties { get; set; } = [];
     public Queue<Function> Methods { get; set; } = [];
 }
 
-class Variable: Stmt {
+class VariableDecl: Stmt {
     public TypeThing Type { get; set; } = new();
     public string Name { get; set; } = "";
-    public Expr? Initializer { get; set; };
+    public Expr? Initializer { get; set; }
 }
 
 class TypeThing {
@@ -38,6 +38,26 @@ enum PrimitiveType {
 class Function {
     public bool IsMessage { get; set; }
     public TypeThing ReturnType { get; set; } = new();
-    public Queue<Variable> Arguments { get; set; } = [];
+    public Queue<VariableDecl> Arguments { get; set; } = [];
     public Queue<Stmt> Statements { get; set; } = [];
+}
+
+class IntLit: Expr {
+    public long Value { get; set; } = 0;
+}
+
+class FloatLit: Expr {
+    public double Value { get; set; } = 0;
+}
+
+class BoolLit: Expr {
+    public bool Value { get; set; } = false;
+}
+
+class CharLit: Expr {
+    public char Value { get; set; } = '\0';
+}
+
+class StringLit: Expr {
+    public string Value { get; set; } = "";
 }
