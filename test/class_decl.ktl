@@ -8,10 +8,10 @@ TypemaBalls no;
 
 msg void Funk();
 fun string ckoff(char jjdj) {
-    // jjhjhjjh
+    /* jjhjhjjh */
 }
 
 msg TypemaBalls suffer(uint lol, float lmao, int jj, string tumadre, char jjj)
 {
-    // jjjjj
+    /* jjjjj */
 }

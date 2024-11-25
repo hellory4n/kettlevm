@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Newtonsoft.Json;
 using Raylib_cs;
 namespace kettlevm;
 
@@ -9,7 +10,13 @@ class Program {
         string file = File.ReadAllText(Path.GetFullPath("test/class_decl.ktl"));
         var (aShit, crapErrors) = Scanner.Scan(file);
         if (crapErrors == 0) {
-            Parser.Parse(aShit);
+            var (aCrap, moreError) = Parser.Parse(aShit);
+            if (moreError == 0) {
+                Console.WriteLine(JsonConvert.SerializeObject(aCrap));
+            }
+            else {
+                Console.WriteLine($"error :( {moreError}");
+            }
         }
         
         /*CompilerState c = new();

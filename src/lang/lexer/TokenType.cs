@@ -25,7 +25,7 @@ enum TokenType
 
     // keywords (and or not are also keywords btw)
     True, False, Class, Fun, Msg, Static, Parf, If, Else, For, While, String, Int, Uint, Float, Bool, Char, Void,
-    Return, Any
+    Return, Any,
 
     End
 }
