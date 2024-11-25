@@ -15,7 +15,7 @@ typedef enum kettle_token_t {
 
 void kettle_print_token(kettle_token_t t) {
     switch (t) {
-        case _EOF: printf("eof "); break;
+        case _EOF: printf("eof\n"); break;
         case TRUE: printf("true "); break;
         case FALSE: printf("false "); break;
         case CLASS: printf("class "); break;
