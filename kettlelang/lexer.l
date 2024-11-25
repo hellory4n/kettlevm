@@ -2,12 +2,25 @@
     #include <stdio.h>
     #include "token.h"
     #include "common.h"
+    int kettle_comment_depth = 0;
 %}
 
 %option noyywrap
+%x COMMENT
 
 %%
 [ \r\n\t]+                  {}
+
+"//".*                   { /*ignore*/ }
+"/*"                     { BEGIN(COMMENT); kettle_comment_depth = 1; }
+<COMMENT>"/*"            { kettle_comment_depth++; }
+<COMMENT>"*/"            {
+                            if (--kettle_comment_depth == 0) {
+                                BEGIN(INITIAL);
+                            }
+                          }
+<COMMENT>.|\n            { /*ignore*/ }
+<COMMENT><<EOF>>         { fprintf(stderr, "Unclosed comment\n"); exit(1); }
 
 "true"                      {return TRUE;}
 "false"                     {return FALSE;}
@@ -42,7 +55,21 @@
 "col"                       {return COL;}
 
 [a-zA-Z_][a-zA-Z0-9_]*      {kettle_pstr = kettle_new_string(yytext, yyleng); return IDENTIFIER;}
-[0-9]+                      {kettle_pstr = kettle_new_string(yytext, yyleng); return INT;}
+[0-9]+\.[0-9]*              {kettle_pstr = kettle_new_string(yytext, yyleng); return FLOATLIT; }
+[0-9]+                      {kettle_pstr = kettle_new_string(yytext, yyleng); return INTLIT;}
+\"([^\\\"]|\\.)*\"          {
+                                /*i love regex*/
+                                yytext[yyleng - 1] = '\0';  /* remove trailing quote */
+                                kettle_pstr = kettle_new_string(strdup(yytext + 1), yyleng); /* remove leading quote */
+                                return STRINGLIT;
+                            }
+\'([^\\\"]|\\.)*\'          {
+                                /*please note char literals are just strings, the rest of the compiler
+                                is supposed to check the length or smth*/
+                                yytext[yyleng - 1] = '\0';  /* remove trailing quote */
+                                kettle_pstr = kettle_new_string(strdup(yytext + 1), yyleng); /* remove leading quote */
+                                return CHARLIT;
+                            }
 
 "("                         {return LPAREN;}
 ")"                         {return RPAREN;}

@@ -24,14 +24,6 @@ typedef enum kettle_token_t {
     IDENTIFIER, INTLIT, FLOATLIT, STRINGLIT, CHARLIT,
 } kettle_token_t;
 
-/*
-entity class CrapPlayer;
-sync vec2 position = (x 69 y 420);
-
-msg void update(CrapPlayer* c, double delta) {
-    OS.println("AND THEN THEY'LL FUUUUUUUUUUUUCK YOU");
-}
-*/
 void kettle_print_token(kettle_token_t t) {
     switch (t) {
         case _EOF: printf("eof\n"); break;
