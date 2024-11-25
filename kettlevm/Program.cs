@@ -8,16 +8,6 @@ class Program {
     public static void Main()
     {
         string file = File.ReadAllText(Path.GetFullPath("test/class_decl.ktl"));
-        var (aShit, crapErrors) = Scanner.Scan(file);
-        if (crapErrors == 0) {
-            var (aCrap, moreError) = Parser.Parse(aShit);
-            if (moreError == 0) {
-                Console.WriteLine(JsonConvert.SerializeObject(aCrap));
-            }
-            else {
-                Console.WriteLine($"error :( {moreError}");
-            }
-        }
         
         /*CompilerState c = new();
         c = Lexer.lex(ref c, file);
