@@ -8,12 +8,30 @@ typedef enum kettle_token_t {
     // keywords
     TRUE, FALSE, CLASS, FUN, MSG, STATIC, PARF, IF, ELSE, FOR, WHILE, STRING, UINT, INT,
     FLOAT, BOOL, CHAR, VOID, ANY, RETURN, AND, OR, NOT, CONTINUE, BREAK, SWITCH, SYNC,
-    ENTITY,
+    ENTITY, VEC2, VEC3, COL,
+
+    LPAREN, RPAREN, LBRACKET, RBRACKET, LBRACE, RBRACE,
+    DOT, COMMA, COLON, SEMICOLON,
+
+    PLUS, MINUS, STAR, SLASH, PERCENT, DOTDOT,
+    PLUSEQ, MINUSEQ, STAREQ, SLASHEQ, PERCENTEQ, DOTDOTEQ,
+
+    GREATER, LESS, GREATEREQ, LESSEQ, EQUAL, EQUALEQ, NOTEQ,
+
+    AMPERSAND, EQARROW, MINUSARROW,
 
     // literals
-    IDENTIFIER, NUMBER,
+    IDENTIFIER, INTLIT, FLOATLIT, STRINGLIT, CHARLIT,
 } kettle_token_t;
 
+/*
+entity class CrapPlayer;
+sync vec2 position = (x 69 y 420);
+
+msg void update(CrapPlayer* c, double delta) {
+    OS.println("AND THEN THEY'LL FUUUUUUUUUUUUCK YOU");
+}
+*/
 void kettle_print_token(kettle_token_t t) {
     switch (t) {
         case _EOF: printf("eof\n"); break;
@@ -45,7 +63,42 @@ void kettle_print_token(kettle_token_t t) {
         case SWITCH: printf("switch "); break;
         case SYNC: printf("sync "); break;
         case ENTITY: printf("entity "); break;
-        case IDENTIFIER: printf("identifier(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
-        case NUMBER: printf("number(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
+        case IDENTIFIER: printf("id(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
+        case INTLIT: printf("int(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
+        case FLOATLIT: printf("float(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
+        case STRINGLIT: printf("string(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
+        case CHARLIT: printf("char(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
+        case LPAREN: printf("( "); break;
+        case RPAREN: printf(") "); break;
+        case LBRACKET: printf("[ "); break;
+        case RBRACKET: printf("] "); break;
+        case LBRACE: printf("{\n"); break;
+        case RBRACE: printf("}\n"); break;
+        case COMMA: printf(", "); break;
+        case COLON: printf(": "); break;
+        case SEMICOLON: printf(";\n"); break;
+        case DOTDOTEQ: printf("..= "); break;
+        case DOTDOT: printf(".. "); break;
+        case DOT: printf(". "); break;
+        case MINUSARROW: printf("-> "); break;
+        case EQARROW: printf("=> "); break;
+        case PLUSEQ: printf("+= "); break;
+        case MINUSEQ: printf("-= "); break;
+        case STAREQ: printf("*= "); break;
+        case SLASHEQ: printf("/= "); break;
+        case PERCENTEQ: printf("%%= "); break;
+        case GREATEREQ: printf(">= "); break;
+        case LESSEQ: printf("<= "); break;
+        case EQUALEQ: printf("== "); break;
+        case NOTEQ: printf("!= "); break;
+        case PLUS: printf("+ "); break;
+        case MINUS: printf("- "); break;
+        case STAR: printf("* "); break;
+        case SLASH: printf("/ "); break;
+        case PERCENT: printf("%% "); break;
+        case GREATER: printf("> "); break;
+        case LESS: printf("< "); break;
+        case EQUAL: printf("= "); break;
+        case AMPERSAND: printf("& "); break;
     }
 }
