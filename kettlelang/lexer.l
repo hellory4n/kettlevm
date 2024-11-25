@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include "token.h"
+    #include "common.h"
 %}
 
 %option noyywrap
@@ -10,7 +11,7 @@
 
 "if"                        {return IF;}
 
-[a-zA-Z_][a-zA-Z0-9_]*      {return IDENTIFIER;}
+[a-zA-Z_][a-zA-Z0-9_]*      {kettle_pstr = kettle_new_string(yytext, yyleng); return IDENTIFIER;}
 [0-9]+                      {return NUMBER;}
 
 .                           {printf("UNEXPECTED HAPPENING THAT HAPPENED UNEXPECTEDLY\n");}

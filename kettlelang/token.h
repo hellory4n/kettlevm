@@ -1,5 +1,6 @@
 #pragma once
 #include <stdio.h>
+#include "common.h"
 
 typedef enum kettle_token_t {
     _EOF,
@@ -44,7 +45,7 @@ void kettle_print_token(kettle_token_t t) {
         case SWITCH: printf("switch "); break;
         case SYNC: printf("sync "); break;
         case ENTITY: printf("entity "); break;
-        case IDENTIFIER: printf("identifier "); break;
-        case NUMBER: printf("number "); break;
+        case IDENTIFIER: printf("identifier(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
+        case NUMBER: printf("number(%s) ", kettle_pstr->data); kettle_free_string(kettle_pstr); break;
     }
 }
