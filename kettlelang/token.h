@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "common.h"
 
-typedef enum kettle_token_t {
+typedef enum kettle_token {
     _EOF,
 
     // keywords
@@ -22,9 +22,9 @@ typedef enum kettle_token_t {
 
     // literals
     IDENTIFIER, INTLIT, FLOATLIT, STRINGLIT, CHARLIT,
-} kettle_token_t;
+} kettle_token;
 
-void kettle_print_token(kettle_token_t t) {
+void kettle_print_token(kettle_token t) {
     switch (t) {
         case _EOF: printf("eof\n"); break;
         case TRUE: printf("true "); break;

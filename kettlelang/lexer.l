@@ -121,7 +121,7 @@
 
 int main() {
     // i hate c
-    while (kettle_token_t t = (kettle_token_t)yylex()) {
+    while (kettle_token t = (kettle_token)yylex()) {
         kettle_print_token(t);
     }
 }
