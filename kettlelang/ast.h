@@ -20,9 +20,22 @@ typedef struct kettle_class {
     bool is_entity;
 } kettle_class;
 
-typedef struct kettle_method {
+typedef struct kettle_function {
     kettle_string* name;
     void* statements;
+    /*kettle_variable_decl*/
+    kettle_linked_list* arguments;
     kettle_type return_type;
     bool is_message;
-} kettle_method;
+} kettle_function;
+
+typedef struct kettle_variable_decl {
+    kettle_string* name;
+    kettle_type type;
+    void* init_expr;
+} kettle_variable_decl;
+
+typedef struct kettle_variable_redef {
+    kettle_string* name;
+    void* expr;
+} kettle_variable_redef;

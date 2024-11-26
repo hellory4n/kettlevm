@@ -8,7 +8,6 @@ class Program {
     public static void Main()
     {
         string file = File.ReadAllText(Path.GetFullPath("test/class_decl.ktl"));
-        a895tujeajt8oizhygiorahegtiojea;gtkpad;fg
         /*CompilerState c = new();
         c = Lexer.lex(ref c, file);
         Lexer.print_tokens(ref c);*/
