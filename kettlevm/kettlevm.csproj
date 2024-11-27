@@ -19,8 +19,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\kettlelang\kettlelang.csproj" />
-  </ItemGroup>
-
 </Project>
