@@ -102,14 +102,9 @@ public class Lexer(string input, string filename) {
 
         // infamous strings
         else if (Match("\"")) {
-            // strings require a custom version of ReadWhile()
-            int start = pos;
-            while (pos < input.Length && input[pos] != '"') {
-                // multiline strings because why not
-                if (input[pos] == '\n') line++;
-                pos++;
-            }
-            string str = input[start..pos];
+            string str = ReadWhile(c => c != '"' && );
+            // multiline strings because why not
+            line += str.Count(c => c == '\n');
 
             // the input ends with like 4 \0s for less checks if it's at the end
             if (str.EndsWith('\0')) {
@@ -121,6 +116,29 @@ public class Lexer(string input, string filename) {
             var t = Token(TokenTag.StringLit);
             t.StringLit = str;
             return t;
+        }
+
+        // infamous characters
+        else if (Match("'")) {
+            string str = ReadWhile(c => c != '\'');
+            line += str.Count(c => c == '\n');
+            
+            // the input ends with like 4 \0s for less checks if it's at the end
+            if (str.EndsWith('\0')) {
+                Error("Char literal doesn't end");
+                return Token(TokenTag.Unexpected);
+            }
+
+            str = Unescape(str);
+            if (str.Length == 1) {
+                var t = Token(TokenTag.CharLit);
+                t.CharLit = str[0];
+                return t;
+            }
+            else {
+                Error("Characters can only be 1 character (for strings use \"double quotes\")");
+                return Token(TokenTag.Unexpected);
+            }
         }
         
         // famous arabic numerals
