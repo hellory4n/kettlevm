@@ -45,8 +45,8 @@ public class Lexer(string input, string filename) {
         else if (Match("!=")) return Token(TokenTag.NotEq);
         else if (Match("&&")) return Token(TokenTag.And);
         else if (Match("||")) return Token(TokenTag.Or);
-        else if (Match("<=")) return Token(TokenTag.GreaterEq);
-        else if (Match(">=")) return Token(TokenTag.LessEq);
+        else if (Match(">=")) return Token(TokenTag.GreaterEq);
+        else if (Match("<=")) return Token(TokenTag.LessEq);
         else if (Match("..")) return Token(TokenTag.DotDot);
         else if (Match("+")) return Token(TokenTag.Plus);
         else if (Match("-")) return Token(TokenTag.Minus);
@@ -102,16 +102,27 @@ public class Lexer(string input, string filename) {
 
         // infamous strings
         else if (Match("\"")) {
-            string str = ReadWhile(c => c != '"' && );
-            // multiline strings because why not
-            line += str.Count(c => c == '\n');
+            string str = ReadWhile(c => c != '"' && c != '\n');
+            Console.WriteLine("ky " + str);
+            // man
+            if (str.EndsWith('\n')) {
+                Error("Multi-line strings aren't supported; use \\n instead");
+                pos++;
+                return Token(TokenTag.Unexpected);
+            }
 
             // the input ends with like 4 \0s for less checks if it's at the end
-            if (str.EndsWith('\0')) {
+            if (pos >= input.Length) {
+                Console.WriteLine("kyss " + str);
                 Error("String literal doesn't end");
                 return Token(TokenTag.Unexpected);
             }
 
+            // so it doesn't start a new string then the world falls under alien invasion and
+            // everybody gets frozen on a spaceship ready to be eaten on alpha centauri by
+            // some green and jelly humanoid.
+            pos++;
+            Console.WriteLine("kys " + input[pos] + " ffs " + str);
             str = Unescape(str);
             var t = Token(TokenTag.StringLit);
             t.StringLit = str;
@@ -119,10 +130,14 @@ public class Lexer(string input, string filename) {
         }
 
         // infamous characters
-        else if (Match("'")) {
+        /*else if (Match("'")) {
             string str = ReadWhile(c => c != '\'');
             line += str.Count(c => c == '\n');
-            
+            // so it doesn't start a new char then the world falls under alien invasion and
+            // everybody gets frozen on a spaceship ready to be eaten on alpha centauri by
+            // some green and jelly humanoid.
+            pos++;
+
             // the input ends with like 4 \0s for less checks if it's at the end
             if (str.EndsWith('\0')) {
                 Error("Char literal doesn't end");
@@ -139,7 +154,7 @@ public class Lexer(string input, string filename) {
                 Error("Characters can only be 1 character (for strings use \"double quotes\")");
                 return Token(TokenTag.Unexpected);
             }
-        }
+        }*/
         
         // famous arabic numerals
         else if (IsDigit(input[pos])) {
@@ -177,7 +192,7 @@ public class Lexer(string input, string filename) {
 
         // nothing matched, complain
         else {
-            //Error($"Unexpected character {input[pos]}");
+            Error($"Unexpected character {input[pos]}");
             return Token(TokenTag.Unexpected);
         }
     }
