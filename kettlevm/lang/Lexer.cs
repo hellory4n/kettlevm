@@ -4,8 +4,9 @@ namespace kettlevm;
 
 public class Lexer(string input, string filename) {
     public int Errors { get; private set; } = 0;
+    // TODO fix your dumbass lexer
+    string input = (input + "\0\0\0\0").Replace("\\\"", "鵈");
     string[] lines = (input + "\0\0\0\0").Split('\n');
-    string input = input + "\0\0\0\0";
     string filename = filename;
     int pos = 0;
     int line = 1;
@@ -101,10 +102,17 @@ public class Lexer(string input, string filename) {
 
         // infamous strings
         else if (Match("\"")) {
-            // we need to check if that quote is actually a \"
-            string str = ReadWhile(c => c == '"' && input[pos - 1] != '\\');
-            // the string ends with like 4 \0s for less checks if it's at the end
-            if (str.EndsWith("\0\0\0\0")) {
+            // strings require a custom version of ReadWhile()
+            int start = pos;
+            while (pos < input.Length && input[pos] != '"') {
+                // multiline strings because why not
+                if (input[pos] == '\n') line++;
+                pos++;
+            }
+            string str = input[start..pos];
+
+            // the input ends with like 4 \0s for less checks if it's at the end
+            if (str.EndsWith('\0')) {
                 Error("String literal doesn't end");
                 return Token(TokenTag.Unexpected);
             }
@@ -215,7 +223,7 @@ public class Lexer(string input, string filename) {
             .Replace("\\t", "\t")
             .Replace("\\v", "\v")
             .Replace("\\'", "'")
-            //.Replace("\\\"", "\"")
+            .Replace("鵈", "\"") // don't ask
             .Replace('垈', '\\');
     }
 }
