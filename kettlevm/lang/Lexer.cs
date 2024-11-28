@@ -15,6 +15,7 @@ public class Lexer(string input, string filename) {
     {
         // lmao
         if (pos >= input.Length) return Token(TokenTag.Eof);
+        else if (input[pos] == '\0') return Token(TokenTag.Eof);
 
         // ignore whitespace
         // we're not python
@@ -28,6 +29,7 @@ public class Lexer(string input, string filename) {
         // handle comments before all of the funny slash operators
         else if (Match("//")) {
             ReadWhile(c => c != '\n');
+            pos++;
             line++;
             // just continue lol
             return GetNextToken();
@@ -56,6 +58,8 @@ public class Lexer(string input, string filename) {
         else if (Match("&")) return Token(TokenTag.Ampersand);
         else if (Match("<")) return Token(TokenTag.Less);
         else if (Match(">")) return Token(TokenTag.Greater);
+        else if (Match("=")) return Token(TokenTag.Equal);
+        else if (Match("!")) return Token(TokenTag.Not);
         else if (Match(":")) return Token(TokenTag.Colon);
         else if (Match(";")) return Token(TokenTag.Semicolon);
         else if (Match(",")) return Token(TokenTag.Comma);
@@ -103,7 +107,6 @@ public class Lexer(string input, string filename) {
         // infamous strings
         else if (Match("\"")) {
             string str = ReadWhile(c => c != '"' && c != '\n');
-            Console.WriteLine("ky " + str);
             // man
             if (str.EndsWith('\n')) {
                 Error("Multi-line strings aren't supported; use \\n instead");
@@ -111,9 +114,7 @@ public class Lexer(string input, string filename) {
                 return Token(TokenTag.Unexpected);
             }
 
-            // the input ends with like 4 \0s for less checks if it's at the end
             if (pos >= input.Length) {
-                Console.WriteLine("kyss " + str);
                 Error("String literal doesn't end");
                 return Token(TokenTag.Unexpected);
             }
@@ -122,7 +123,6 @@ public class Lexer(string input, string filename) {
             // everybody gets frozen on a spaceship ready to be eaten on alpha centauri by
             // some green and jelly humanoid.
             pos++;
-            Console.WriteLine("kys " + input[pos] + " ffs " + str);
             str = Unescape(str);
             var t = Token(TokenTag.StringLit);
             t.StringLit = str;
@@ -130,19 +130,24 @@ public class Lexer(string input, string filename) {
         }
 
         // infamous characters
-        /*else if (Match("'")) {
-            string str = ReadWhile(c => c != '\'');
-            line += str.Count(c => c == '\n');
-            // so it doesn't start a new char then the world falls under alien invasion and
-            // everybody gets frozen on a spaceship ready to be eaten on alpha centauri by
-            // some green and jelly humanoid.
-            pos++;
+        else if (Match("'")) {
+            string str = ReadWhile(c => c != '\'' && c != '\n');
+            // man
+            if (str.EndsWith('\n')) {
+                Error("Multi-line strings aren't supported; use \\n instead");
+                pos++;
+                return Token(TokenTag.Unexpected);
+            }
 
-            // the input ends with like 4 \0s for less checks if it's at the end
-            if (str.EndsWith('\0')) {
+            if (pos >= input.Length) {
                 Error("Char literal doesn't end");
                 return Token(TokenTag.Unexpected);
             }
+
+            // so it doesn't start a new CHAR then the world falls under alien invasion and
+            // everybody gets frozen on a spaceship ready to be eaten on alpha centauri by
+            // some green and jelly humanoid.
+            pos++;
 
             str = Unescape(str);
             if (str.Length == 1) {
@@ -154,7 +159,7 @@ public class Lexer(string input, string filename) {
                 Error("Characters can only be 1 character (for strings use \"double quotes\")");
                 return Token(TokenTag.Unexpected);
             }
-        }*/
+        }
         
         // famous arabic numerals
         else if (IsDigit(input[pos])) {
@@ -202,6 +207,7 @@ public class Lexer(string input, string filename) {
         // that funny .. thing is just making a substring
         if (input[pos..].StartsWith(text)) {
             pos += text.Length;
+            line += text.Count(c => c == '\n');
             return true;
         }
         return false;
@@ -214,7 +220,9 @@ public class Lexer(string input, string filename) {
             pos++;
         }
         // that funny .. thing is just making a substring
-        return input[start..pos];
+        string s = input[start..pos];
+        line += s.Count(c => c == '\n');
+        return s;
     }
 
     Token Token(TokenTag type) {

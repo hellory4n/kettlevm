@@ -20,7 +20,7 @@ public enum TokenTag {
     Identifier, FloatLit, IntLit, StringLit, CharLit,
     
     Lparen, Rparen, Lbracket, Rbracket, Lbrace, Rbrace,
-    Comma, Colon, Semicolon, Dot, MinusArrow, EqArrow,
+    Comma, Colon, Semicolon, Dot, MinusArrow,
     
     PlusEq, MinusEq, StarEq, SlashEq, PercentEq, DotDotEq,
     GreaterEq, LessEq, EqualEq, NotEq,
