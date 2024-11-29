@@ -5,11 +5,11 @@ namespace kettlevm;
 public class Lexer(string input, string filename) {
     public int Errors { get; private set; } = 0;
     // TODO fix your dumbass lexer
-    string input = (input + "\0\0\0\0").Replace("\\\"", "鵈");
-    string[] lines = (input + "\0\0\0\0").Split('\n');
-    string filename = filename;
-    int pos = 0;
-    int line = 1;
+    internal string input = (input + "\0\0\0\0").Replace("\\\"", "鵈");
+    internal string[] lines = (input + "\0\0\0\0").Split('\n');
+    internal string filename = filename;
+    internal int pos = 0;
+    internal int line = 1;
 
     public Token GetNextToken()
     {

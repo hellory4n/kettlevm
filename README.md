@@ -72,8 +72,8 @@ static fun ParfInstruction* new() {
 
 ## how to run
 
-install zig
+install c#
 
-install raylib dependencies https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux
+if it doesnt work try installing raylib dependencies https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux
 
 on windows you have to install raylib itself idfk
